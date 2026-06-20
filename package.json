@@ -1,0 +1,20 @@
+{
+  "name": "playwright-test-automation",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@azure/playwright": "^1.1.6",
+    "@playwright/test": "^1.61.0",
+    "@types/node": "^26.0.0",
+    "dotenv": "^17.4.2",
+    "typescript": "^6.0.3"
+  },
+  "dependencies": {
+    "@azure/identity": "^4.13.1"
+  }
+}

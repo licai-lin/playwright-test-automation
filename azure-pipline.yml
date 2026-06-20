@@ -1,0 +1,48 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pr:
+  branches:
+    include:
+      - main
+
+variables:
+  PLAYWRIGHT_SERVICE_URL: "wss://eastasia.api.playwright.microsoft.com/playwrightworkspaces/86bb2b02-c971-4550-879b-cb1e214766cc/browsers"
+  PLAYWRIGHT_WORKERS: "1"
+  PLAYWRIGHT_USERNAME: "student"
+  PLAYWRIGHT_PASSWORD: "Password123"
+
+steps:
+  - task: PowerShell@2
+    enabled: true
+    displayName: "Install dependencies"
+    inputs:
+      targetType: "inline"
+      script: "npm ci"
+      workingDirectory: "$(System.DefaultWorkingDirectory)"
+
+  - task: AzureCLI@2
+    displayName: "Run Playwright Test"
+    env:
+      PLAYWRIGHT_SERVICE_URL: $(PLAYWRIGHT_SERVICE_URL)
+      PLAYWRIGHT_SAMPLE_USERNAME: $(PLAYWRIGHT_USERNAME)
+      PLAYWRIGHT_USERNAME: $(PLAYWRIGHT_USERNAME)
+      PLAYWRIGHT_PASSWORD: $(PLAYWRIGHT_PASSWORD)
+      # PLAYWRIGHT_SERVICE_ACCESS_TOKEN: $(PLAYWRIGHT_SERVICE_ACCESS_TOKEN) # Not recommended, use Microsoft Entra ID authentication.
+    inputs:
+      azureSubscription: "playwright-demo-test-service-connection" # Update to your Azure service connection name.
+      scriptType: "pscore"
+      scriptLocation: "inlineScript"
+      inlineScript: |
+        npx playwright test -c playwright.service.config.ts --workers=$(PLAYWRIGHT_WORKERS)
+      addSpnToEnvironment: true
+      workingDirectory: "$(System.DefaultWorkingDirectory)"
+
+  - task: PublishPipelineArtifact@1
+    displayName: "Upload Playwright report"
+    inputs:
+      targetPath: "$(System.DefaultWorkingDirectory)/playwright-report"
+      artifact: "Playwright tests"
+      publishLocation: "pipeline"
