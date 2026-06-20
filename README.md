@@ -2,6 +2,12 @@
 
 This repository is a Playwright + TypeScript test automation project for end-to-end browser testing, API testing, environment configuration, and CI execution with Azure DevOps and Azure Playwright Workspaces.
 
+## Azure DevOps Pipeline
+
+<p align="center">
+  <img src="docs/images/azure-devops-pipeline-success.jpg" alt="Azure DevOps pipeline passing" width="900">
+</p>
+
 ## What This Project Demonstrates
 
 - End-to-end browser testing with Playwright
